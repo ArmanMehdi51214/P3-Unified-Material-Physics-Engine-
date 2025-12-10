@@ -1,6 +1,5 @@
 from p3_cdda.cdda_loader import CddaLoader
-
-loader = CddaLoader("path/to/CDDA/data/json")
+loader =  CddaLoader("CDDA_JSON")
 items = loader.load_all_items()
 
 print("Loaded:", len(items))
