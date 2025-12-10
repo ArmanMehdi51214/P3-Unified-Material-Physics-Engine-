@@ -1,0 +1,23 @@
+SELECT ?material ?materialLabel ?materialDescription ?density ?melting_point ?tensile_strength ?thermal_conductivity
+WHERE {
+  VALUES ?materialClass {
+    wd:Q287         # wood
+    wd:Q11426       # iron
+    wd:Q37756       # steel
+    wd:Q80228       # plastic
+    wd:Q11469       # glass
+    wd:Q42501       # copper
+    wd:Q753         # aluminum
+    wd:Q181138      # kevlar
+  }
+
+  ?material wdt:P31 ?materialClass .
+
+  OPTIONAL { ?material wdt:P2054 ?density . }
+  OPTIONAL { ?material wdt:P2101 ?melting_point . }
+  OPTIONAL { ?material wdt:P2250 ?tensile_strength . }
+  OPTIONAL { ?material wdt:P11426 ?thermal_conductivity . }
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+LIMIT 300
