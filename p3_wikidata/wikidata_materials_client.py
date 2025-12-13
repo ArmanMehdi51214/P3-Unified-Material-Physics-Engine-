@@ -1,7 +1,7 @@
 import os
 import requests
 from typing import List, Dict, Any, Optional
-
+from p3_embeddings.embedder import MiniLMEmbedder
 from p3_core.types import WikidataMaterial
 
 
@@ -124,3 +124,29 @@ class WikidataMaterialsClient:
             unique[m.qid] = m
 
         return list(unique.values())
+    def embed_materials(
+        self,
+        materials: List[WikidataMaterial],
+        embedder: MiniLMEmbedder,
+    ) -> None:
+        """
+        Generate embeddings for WikidataMaterial objects in-place.
+        """
+
+        texts = []
+        for mat in materials:
+            parts = [mat.label]
+
+            if mat.description:
+                parts.append(mat.description)
+
+            if mat.aliases:
+                parts.extend(mat.aliases)
+
+            texts.append(" ".join(parts))
+
+        embeddings = embedder.embed(texts)
+
+        for mat, emb in zip(materials, embeddings):
+            mat.embedding = emb
+
